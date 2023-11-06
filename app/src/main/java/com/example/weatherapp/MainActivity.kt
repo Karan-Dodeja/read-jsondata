@@ -5,6 +5,7 @@ import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -80,9 +81,26 @@ class MainActivity : AppCompatActivity() {
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             cancelProgressDialog()
+
             if (result != null) {
                 Log.i("JSON RESPONSES RESULT", result)
             }
+
+            val jsonObject = JSONObject(result)
+            val message = jsonObject.optString("message")
+            val userId = jsonObject.optInt("user_id")
+            val name = jsonObject.optString("name")
+
+            val profileDetailsobject = jsonObject.optJSONObject("profile_details")
+            val isprofileCompleted = profileDetailsobject.optBoolean("is_profile_completed")
+            val dataListArray = jsonObject.optJSONArray("data_list")
+
+            for (item in 0 until dataListArray.length()) {
+                val dataItemObject: JSONObject = dataListArray[item] as JSONObject
+                val id = dataItemObject.optInt("id")
+                val value = dataItemObject.optString("value")
+            }
+
         }
 
         private fun showProgressDialog(){
