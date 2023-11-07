@@ -5,6 +5,7 @@ import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.google.gson.Gson
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.DataOutputStream
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             var connection: HttpURLConnection? = null
 
             try {
-                val url = URL("https://run.mocky.io/v3/e88d3d25-abcd-42ea-a392-60550ffaa6df")
+                val url = URL("https://run.mocky.io/v3/13bae995-a7d4-43b1-beb8-a464d4ce2cde")
                 connection = url.openConnection() as HttpURLConnection
                 connection.doInput = true
                 connection.doOutput = true
@@ -104,6 +105,8 @@ class MainActivity : AppCompatActivity() {
             if (result != null) {
                 Log.i("JSON RESPONSES RESULT", result)
             }
+
+            val responseData = Gson().fromJson(result, ResponseData::class.java)
 
             val jsonObject = JSONObject(result)
             val message = jsonObject.optString("message")
